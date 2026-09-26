@@ -1,12 +1,12 @@
-- name: Create redis netpol
+- name: Create netpol
   CHANGE_ME:
     state: present
-    namespace: 
+    namespace: CHANGE_ME
     definition:
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
       metadata:
-        name: allow-redis
+        name: CHANGE_ME
       spec:
         podSelector:
           matchLabels:
