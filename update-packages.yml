@@ -1,0 +1,26 @@
+- name: Update packages
+  hosts: all
+  become: true  # Run tasks with root privileges
+
+  tasks:
+
+    - name: Add the RHEL9 base additional packages repository
+      ansible.builtin.yum_repository:
+        name: CHANGE_ME
+        description: RHEL9 BaseOS packages
+        baseurl: CHANGE_ME
+        gpgcheck: false
+        enabled: true
+
+    - name: Add the RHEL9 appstream additional packages repository
+      ansible.builtin.yum_repository:
+        name: CHANGE_ME
+        description: RHEL9 AppStream packages
+        baseurl: CHANGE_ME
+        gpgcheck: false
+        enabled: true
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: CHANGE_ME
+        state: latest
