@@ -1,0 +1,49 @@
+---
+- name: Apache VM installation and configuration
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+
+  - name: Install Apache packages
+    ansible.builtin.dnf:
+      state: present
+      name:
+        - httpd
+        - firewalld
+        - php
+        - php-mysqli
+#we have to define the packages list here 
+  - name: Ensure firewalld is running
+    ansible.builtin.service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+  - name: Open Firewall for Apache use
+    ansible.builtin.firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+      immediate: yes
+#above task fully we have to write in exam 
+
+  - name: Set httpd_can_network_connect_db flag on
+    ansible.posix.seboolean:
+      name: httpd_can_network_connect_db
+      state: true
+      persistent: true
+
+  - name: Set up web page
+    ansible.builtin.copy:
+      dest: /var/www/html/index.php
+      mode: 0644
+      content: |
+        Simple Webpage
+        All the best for EX336 Exam  
+
+  - name: Ensure Apache is running at boot
+    ansible.builtin.service:
+      name: httpd
+      enabled: yes
+      state: started
