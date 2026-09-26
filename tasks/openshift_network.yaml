@@ -15,3 +15,5 @@
           - ports:
               - protocol: TCP
                 port: 
+                
+# vm.kubevirt.io/name: dynamite
