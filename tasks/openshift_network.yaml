@@ -1,0 +1,62 @@
+---
+- name: Create Redis service
+  CHANGE_ME:
+    state: present
+    namespace: CHANGE_ME
+    definition:
+      apiVersion: v1
+      kind: CHANGE_ME
+      metadata:
+        name: redis
+      spec:
+        ports:
+          - port: 6379
+            protocol: TCP
+            targetPort: CHANGE_ME
+        selector:
+          CHANGE_ME
+
+- name: Create Grafana service
+  CHANGE_ME:
+    state: present
+    namespace: CHANGE_ME
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: grafana
+      spec:
+        selector:
+          CHANGE_ME
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: CHANGE_ME
+
+- name: Create Grafana route
+  CHANGE_ME:
+    service: grafana
+    namespace: CHANGE_ME
+    tls:
+      insecure_policy: redirect
+    termination: edge
+    hostname: CHANGE_ME
+
+- name: Create redis netpol
+  CHANGE_ME:
+    state: present
+    namespace: CHANGE_ME
+    definition:
+      kind: NetworkPolicy
+      apiVersion: networking.k8s.io/v1
+      metadata:
+        name: allow-redis
+      spec:
+        podSelector:
+          matchLabels:
+            CHANGE_ME
+        ingress:
+          - ports:
+              - protocol: TCP
+                port: CHANGE_ME
