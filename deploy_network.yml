@@ -1,0 +1,29 @@
+- name: Deploy Monitoring Stack
+  hosts: all
+  gather_facts: true
+  become: true
+
+  tasks:
+
+    - name: Set up repositories
+      ansible.builtin.include_tasks: tasks/setup_repositories.yaml
+
+    - name: Deploy Grafana
+      ansible.builtin.include_tasks: tasks/deploy_grafana.yaml
+      when: inventory_hostname in groups["grafana"]
+
+    - name: Deploy PCP
+      ansible.builtin.include_tasks: tasks/deploy_pcp.yaml
+
+    - name: OpenShift Network
+      ansible.builtin.include_tasks:
+        file: tasks/openshift_network.yaml
+        apply:
+          delegate_to: localhost
+          run_once: true
+          become: false
+
+    - name: Restart pmproxy
+      ansible.builtin.service:
+        name: pmproxy
+        state: restarted
