@@ -1,7 +1,7 @@
 - name: Create redis netpol
   CHANGE_ME:
     state: present
-    namespace: CHANGE_ME
+    namespace: 
     definition:
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
@@ -14,4 +14,4 @@
         ingress:
           - ports:
               - protocol: TCP
-                port: CHANGE_ME
+                port: 
